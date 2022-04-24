@@ -20,6 +20,9 @@ public class DeptListAction extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
+        //获取应用的根路径
+        String path = request.getContextPath();
+
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("	<head>");
@@ -61,7 +64,7 @@ public class DeptListAction extends HttpServlet {
                 out.println("				 <td>");
                 out.println("					 <a href='javascript:void(0)' onclick='window.confirm('确认删除数据吗')'>删除</a>");
                 out.println("					 <a href='edit.html'>修改</a>");
-                out.println("					 <a href='detail.html'>详情</a>");
+                out.println("					 <a href='"+path+"/dept/detail?deptno="+deptno+"'>详情</a>");
                 out.println("				 </td>");
                 out.println("			</tr>");
             }
