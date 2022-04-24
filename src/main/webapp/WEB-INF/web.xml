@@ -3,5 +3,12 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+    <servlet-name>list</servlet-name>
+    <servlet-class>com.oa.action.DeptListAction</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>list</servlet-name>
+    <url-pattern>/dept/list</url-pattern>
+  </servlet-mapping>
 </web-app>
