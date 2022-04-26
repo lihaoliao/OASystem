@@ -5,6 +5,13 @@
 		<title>部门列表页面</title>
 	</head>
 	<body>
+	<script type="text/javascript">
+		function del(){
+			if(window.confirm("确定要删除吗？")){
+				
+			}
+		}
+	</script>
 		<h1 align='center'>部门列表</h1>
 		<hr />
 		<table border='1px' align='center' width='50%'>
@@ -21,8 +28,7 @@
 				 <td>10</td>
 				 <td>销售部</td>
 				 <td>
-					 <a href=>删除</a>
-					 
+					 <a href="javascript:void(0)" onclick="del()">删除</a>
 					 <a href='edit.html'>修改</a>
 					 <a href='detail.html'>详情</a>
 				 </td>

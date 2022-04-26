@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DeptDetailAction extends HttpServlet {
+public class DeptEditAction extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -33,7 +33,7 @@ public class DeptDetailAction extends HttpServlet {
         out.println("		<title>部门详情</title>");
         out.println("	</head>");
         out.println("	<body>");
-        out.println("		<h1>部门详情</h1>");
+        out.println("		<h1>修改部门详情</h1>");
 
 
         try {
@@ -46,17 +46,20 @@ public class DeptDetailAction extends HttpServlet {
                 String dname = rs.getString("dname");
                 String location = rs.getString("location");
 
-                out.println("        部门编号:"+deptno+" <br />");
-                out.println("        部门名称:"+dname+"<br />");
-                out.println("        部门位置:"+location+"<br />");
+                out.println("<form action='"+request.getContextPath()+"/dept/modify' method='POST'>");
+                out.println("   部门编号<input type='text' name='deptno' value='"+deptno+"' readonly/><br>");
+                out.println("   部门名称<input type='text' name='dname' value='"+dname+"'/><br>");
+                out.println("   部门位置<input type='text' name='location' value='"+location+"'/><br>");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
             DBUtil.close(conn,ps,rs);
         }
-        out.println("		<input type='button' value='back' onclick='window.history.back()'/>");
-        out.println("	</body>");
+        out.println("	<input type='submit' value='修改'/>");
+        out.println("   <input type='button' value='取消修改' onclick='window.history.back()'/>");
+        out.println("</form>");
+        out.println("</body>");
         out.println("</html>");
     }
 }

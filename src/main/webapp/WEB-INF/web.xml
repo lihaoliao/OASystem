@@ -7,16 +7,59 @@
     <servlet-name>list</servlet-name>
     <servlet-class>com.oa.action.DeptListAction</servlet-class>
   </servlet>
+
   <servlet>
     <servlet-name>detail</servlet-name>
     <servlet-class>com.oa.action.DeptDetailAction</servlet-class>
   </servlet>
+
+  <servlet>
+    <servlet-name>delete</servlet-name>
+    <servlet-class>com.oa.action.DeptDeleteAction</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>save</servlet-name>
+    <servlet-class>com.oa.action.DeptSaveAction</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>edit</servlet-name>
+    <servlet-class>com.oa.action.DeptEditAction</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>modify</servlet-name>
+    <servlet-class>com.oa.action.DeptModifyAction</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>list</servlet-name>
     <url-pattern>/dept/list</url-pattern>
   </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>detail</servlet-name>
     <url-pattern>/dept/detail</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>delete</servlet-name>
+    <url-pattern>/dept/delete</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>save</servlet-name>
+    <url-pattern>/dept/save</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>edit</servlet-name>
+    <url-pattern>/dept/edit</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>modify</servlet-name>
+    <url-pattern>/dept/modify</url-pattern>
   </servlet-mapping>
 </web-app>
