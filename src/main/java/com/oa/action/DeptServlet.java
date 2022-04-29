@@ -1,5 +1,6 @@
 package com.oa.action;
 
+import com.oa.bean.Dept;
 import com.oa.utils.DBUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @WebServlet({"/dept/list","/dept/detail","/dept/delete","/dept/save","/dept/edit","/dept/modify"})
 //@WebServlet("/dept/*")
@@ -70,7 +72,7 @@ public class DeptServlet extends HttpServlet {
         }
     }
 
-    private void doEdit(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void doEdit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
@@ -81,15 +83,7 @@ public class DeptServlet extends HttpServlet {
         Connection conn = null;
         PreparedStatement ps =  null;
         ResultSet rs = null;
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("	<head>");
-        out.println("		<meta charset='utf-8'>");
-        out.println("		<title>部门详情</title>");
-        out.println("	</head>");
-        out.println("	<body>");
-        out.println("		<h1>修改部门详情</h1>");
-
+        Dept d = new Dept();
 
         try {
             conn = DBUtil.getConnection();
@@ -100,22 +94,20 @@ public class DeptServlet extends HttpServlet {
             if(rs.next()){
                 String dname = rs.getString("dname");
                 String location = rs.getString("location");
+                d.setDeptno(deptno);
+                d.setDname(dname);
+                d.setLocation(location);
 
-                out.println("<form action='"+request.getContextPath()+"/dept/modify' method='POST'>");
-                out.println("   部门编号<input type='text' name='deptno' value='"+deptno+"' readonly/><br>");
-                out.println("   部门名称<input type='text' name='dname' value='"+dname+"'/><br>");
-                out.println("   部门位置<input type='text' name='location' value='"+location+"'/><br>");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
             DBUtil.close(conn,ps,rs);
         }
-        out.println("	<input type='submit' value='修改'/>");
-        out.println("   <input type='button' value='取消修改' onclick='window.history.back()'/>");
-        out.println("</form>");
-        out.println("</body>");
-        out.println("</html>");
+            request.setAttribute("dept",d);
+            request.getRequestDispatcher("/edit.jsp").forward(request,response);
+
+
     }
 
     private void doSave(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -191,7 +183,7 @@ public class DeptServlet extends HttpServlet {
         }
     }
 
-    private void doDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void doDetail(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
@@ -202,15 +194,7 @@ public class DeptServlet extends HttpServlet {
         Connection conn = null;
         PreparedStatement ps =  null;
         ResultSet rs = null;
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("	<head>");
-        out.println("		<meta charset='utf-8'>");
-        out.println("		<title>部门详情</title>");
-        out.println("	</head>");
-        out.println("	<body>");
-        out.println("		<h1>部门详情</h1>");
-
+        Dept dept = new Dept();
 
         try {
             conn = DBUtil.getConnection();
@@ -221,22 +205,21 @@ public class DeptServlet extends HttpServlet {
             if(rs.next()){
                 String dname = rs.getString("dname");
                 String location = rs.getString("location");
-
-                out.println("        部门编号:"+deptno+" <br />");
-                out.println("        部门名称:"+dname+"<br />");
-                out.println("        部门位置:"+location+"<br />");
+                dept.setDname(dname);
+                dept.setLocation(location);
+                dept.setDeptno(deptno);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             DBUtil.close(conn,ps,rs);
         }
-        out.println("		<input type='button' value='back' onclick='window.history.back()'/>");
-        out.println("	</body>");
-        out.println("</html>");
+        request.setAttribute("dept",dept);
+        request.getRequestDispatcher("/detail.jsp").forward(request,response);
+
     }
 
-    private void doList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void doList(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         //连接数据库，查询所有部门
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -244,33 +227,7 @@ public class DeptServlet extends HttpServlet {
         //获取应用的根路径
         String path = request.getContextPath();
 
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("	<head>");
-        out.println("		<meta charset='utf-8'>");
-        out.println("		<title>部门列表页面</title>");
-
-        out.println("        <script type='text/javascript'>");
-        out.println("                function del(dno){");
-        out.println("            if(window.confirm('确定要删除吗？')){");
-        out.println("                document.location.href='"+path+"/dept/delete?deptno='+dno;");
-        out.println("            }");
-        out.println("        }");
-        out.println("	    </script>");
-
-        out.println("	</head>");
-        out.println("	<body>");
-        out.println("		<h1 align='center'>部门列表</h1>");
-        out.println("		<hr />");
-        out.println("		<table border='1px' align='center' width='50%'>");
-        out.println("			<tr>");
-        out.println("				<th>序号</th>");
-        out.println("				<th>部门编号</th>");
-        out.println("				<th>部门名称</th>");
-        out.println("				<th>操作</th>");
-        out.println("			</tr>");
-        //以上固定输出
-
+        ArrayList<Dept> depts = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps =  null;
         ResultSet rs = null;
@@ -285,16 +242,10 @@ public class DeptServlet extends HttpServlet {
                 String dname = rs.getString("dname");
                 String location = rs.getString("location");
 
-                out.println("			<tr>");
-                out.println("				 <td>"+(i++)+"</td>");
-                out.println("				 <td>"+deptno+"</td>");
-                out.println("				 <td>"+dname+"</td>");
-                out.println("				 <td>");
-                out.println("					 <a href='javascript:void(0)' onclick='del("+deptno+")'>删除</a>");
-                out.println("					 <a href='"+path+"/dept/edit?deptno="+deptno+"'>修改</a>");
-                out.println("					 <a href='"+path+"/dept/detail?deptno="+deptno+"'>详情</a>");
-                out.println("				 </td>");
-                out.println("			</tr>");
+                Dept dept = new Dept(deptno,dname,location);
+                //存放部门对象
+                depts.add(dept);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -302,11 +253,11 @@ public class DeptServlet extends HttpServlet {
             DBUtil.close(conn,ps,rs);
         }
 
-        //固定输出
-        out.println("		</table>");
-        out.println("		<a href='"+path+"/add.html'>新增部门</a>");
-        out.println("	</body>");
-        out.println("</html>");
+
+        //将集合放到请求域当中
+        request.setAttribute("deptList",depts);
+        //转发
+        request.getRequestDispatcher("/list.jsp").forward(request,response);
     }
 
 

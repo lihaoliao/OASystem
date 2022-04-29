@@ -6,9 +6,9 @@
 	</head>
 	<body>
 	<script type="text/javascript">
-		function del(){
+		function del(dno){
 			if(window.confirm("确定要删除吗？")){
-				
+				document.location.href="/oa/dept/delete?deptno="+dno;
 			}
 		}
 	</script>
