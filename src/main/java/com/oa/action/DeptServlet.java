@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,18 +28,23 @@ public class DeptServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //获取Servlet path
         String servletPath = request.getServletPath();
-        if(servletPath.equals("/dept/list")){
-            doList(request,response);
-        }else if(servletPath.equals("/dept/detail")){
-            doDetail(request,response);
-        }else if(servletPath.equals("/dept/delete")){
-            doDel(request,response);
-        }else if(servletPath.equals("/dept/save")){
-            doSave(request,response);
-        }else if(servletPath.equals("/dept/edit")){
-            doEdit(request,response);
-        }else if(servletPath.equals("/dept/modify")){
-            doModify(request,response);
+        HttpSession session = request.getSession(false);
+        if (session!=null && session.getAttribute("username")!=null) {
+            if (servletPath.equals("/dept/list")) {
+                doList(request, response);
+            } else if (servletPath.equals("/dept/detail")) {
+                doDetail(request, response);
+            } else if (servletPath.equals("/dept/delete")) {
+                doDel(request, response);
+            } else if (servletPath.equals("/dept/save")) {
+                doSave(request, response);
+            } else if (servletPath.equals("/dept/edit")) {
+                doEdit(request, response);
+            } else if (servletPath.equals("/dept/modify")) {
+                doModify(request, response);
+            }
+        }else {
+            response.sendRedirect(request.getContextPath()+"/index.jsp");
         }
     }
 
