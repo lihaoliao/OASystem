@@ -29,9 +29,19 @@ public class UserServlet extends HttpServlet {
         //销毁session对象
         HttpSession session = request.getSession(false);
         if(session!=null){
-            //手动销毁
+            //手动销毁session
             session.invalidate();
-            response.sendRedirect(request.getContextPath()+"/index.jsp");
+            //cookie也要销毁
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    cookie.setMaxAge(0);
+                    //路径覆盖
+                    cookie.setPath(request.getContextPath());
+                    response.addCookie(cookie);
+                }
+            }
+            response.sendRedirect(request.getContextPath());
         }
     }
 
@@ -52,8 +62,8 @@ public class UserServlet extends HttpServlet {
             Cookie cookie1 = new Cookie("password",password);
             cookie.setMaxAge(60 * 60 * 24 * 10);
             cookie1.setMaxAge(60 * 60 * 24 * 10);
-            cookie.setPath("/oa");
-            cookie1.setPath("/oa");
+            cookie.setPath(request.getContextPath());
+            cookie1.setPath(request.getContextPath());
             response.addCookie(cookie);
             response.addCookie(cookie1);
         }

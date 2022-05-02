@@ -1,4 +1,4 @@
-<%@page contentType="text/html;charset=utf-8"%>
+<%@page contentType="text/html;charset=utf-8" isELIgnored="false" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,6 +7,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>error</title>
+
 </head>
 <body>
 <h1>删除失败<br>
